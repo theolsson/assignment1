@@ -1,11 +1,18 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Saab95 extends Car {
 
-    public boolean turboOn;
+    private boolean turboOn;
     
     public Saab95() {
         super(2, 125, Color.red, "Saab95");
+        this.turboOn = false;
+        stopEngine();
+    }
+
+    public Saab95(Point2D.Double currentCoordinate, CompassDirection currentDirection){
+        super(2, 125, Color.red, "Saab95", currentCoordinate, currentDirection);
         this.turboOn = false;
         stopEngine();
     }

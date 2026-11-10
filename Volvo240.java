@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Volvo240 extends Car {
 
@@ -6,6 +7,11 @@ public class Volvo240 extends Car {
     
     public Volvo240() {
         super(4, 100, Color.black, "Volvo240");
+        stopEngine();
+    }
+
+    public Volvo240(Point2D.Double currentCoordinate, CompassDirection currentDirection){
+        super(4, 100, Color.black, "Volvo240", currentCoordinate, currentDirection);
         stopEngine();
     }
 
