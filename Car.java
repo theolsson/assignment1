@@ -45,5 +45,34 @@ abstract public class Car {
 
     public abstract double speedFactor();
 
+    private void incrementSpeed(double amount){
+        double newSpeed = getCurrentSpeed() + speedFactor() * amount;
+        newSpeed = clamp(newSpeed, 0, enginePower);
 
+        this.currentSpeed = newSpeed;
+    }
+
+    private void decrementSpeed(double amount){
+        double newSpeed = getCurrentSpeed() - speedFactor() * amount;
+        newSpeed = clamp(newSpeed, 0, enginePower);
+
+        this.currentSpeed = newSpeed;
+    }
+
+    public void gas(double amount){
+        if ((amount >= 0) && (amount<=1))
+            incrementSpeed(amount);
+    }
+
+    public void brake(double amount){
+        if ((amount >= 0) && (amount<=1))
+            decrementSpeed(amount);
+    }
+
+    // Helper function
+    private double clamp(double inputValue, double min, double max){
+        inputValue = Math.min(inputValue, max);
+        inputValue = Math.max(inputValue, min);
+        return inputValue;
+    }
 }
