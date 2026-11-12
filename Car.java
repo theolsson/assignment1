@@ -69,7 +69,7 @@ abstract public class Car {
             decrementSpeed(amount);
     }
 
-    // Helper functions
+    // Helper function
     private double clamp(double inputValue, double min, double max){
         inputValue = Math.min(inputValue, max);
         inputValue = Math.max(inputValue, min);
