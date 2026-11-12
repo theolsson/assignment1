@@ -1,4 +1,4 @@
-public class CarTester {
+public class Task4Tester {
     void main(){
         Saab95 myCar = new Saab95();
         IO.println("Car Speed: " + myCar.getCurrentSpeed());
