@@ -1,24 +1,47 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-abstract public class Car {
-    private final int nrDoors; // Number of doors on the car
-    private final double enginePower;
-    private double currentSpeed; // The current speed of the car
-    private Color color; // Color of the car
-    private final String modelName; // The car model name
+public abstract class Car implements Movable {
+    protected int nrDoors; // Number of doors on the car
+    protected double enginePower; // Engine power of the car
+    protected double currentSpeed; // The current speed of the car
+    protected Color color; // Color of the car
+    protected String modelName; // The car model name
+    
+    protected Point2D.Double currentPosition = new Point2D.Double(0,0);
+    protected Direction currentDirection = Direction.UP;
+    
+    public Car(){}
 
-    public Car(int nrDoors, double enginePower, Color color, String modelName){
+    public Car(int nrDoors, Color color, double enginePower, String modelName) {
         this.nrDoors = nrDoors;
-        this.enginePower = enginePower;
         this.color = color;
+        this.enginePower = enginePower;
         this.modelName = modelName;
     }
 
+    public void move() {
+        Point dirVector = currentDirection.getVector();
+
+        double dx = dirVector.x * currentSpeed;
+        double dy = dirVector.y * currentSpeed;
+
+        currentPosition.x += dx;
+        currentPosition.y += dy;
+    }
+
+    public void turnLeft() {
+        currentDirection = currentDirection.getLeftTurnDirection();
+    }
+
+    public void turnRight() {
+        currentDirection = currentDirection.getRightTurnDirection();
+    }
 
     public int getNrDoors() {
         return nrDoors;
     }
-
+    
     public double getEnginePower() {
         return enginePower;
     }
@@ -43,36 +66,23 @@ abstract public class Car {
         currentSpeed = 0;
     }
 
-    public abstract double speedFactor();
-
-    private void incrementSpeed(double amount){
-        double newSpeed = getCurrentSpeed() + speedFactor() * amount;
-        newSpeed = clamp(newSpeed, 0, enginePower);
-
-        this.currentSpeed = newSpeed;
+    public void incrementSpeed(double amount) {
+        currentSpeed = getCurrentSpeed() + speedFactor() * amount;
     }
 
-    private void decrementSpeed(double amount){
-        double newSpeed = getCurrentSpeed() - speedFactor() * amount;
-        newSpeed = clamp(newSpeed, 0, enginePower);
-
-        this.currentSpeed = newSpeed;
+    public void decrementSpeed(double amount) {
+        currentSpeed = getCurrentSpeed() - speedFactor() * amount;
+    }
+        
+    abstract public double speedFactor();
+    
+    // TODO fix this method according to assignment pm
+    public void gas(double amount) {
+        incrementSpeed(amount);
     }
 
-    public void gas(double amount){
-        if ((amount >= 0) && (amount<=1))
-            incrementSpeed(amount);
-    }
-
-    public void brake(double amount){
-        if ((amount >= 0) && (amount<=1))
-            decrementSpeed(amount);
-    }
-
-    // Helper functions
-    private double clamp(double inputValue, double min, double max){
-        inputValue = Math.min(inputValue, max);
-        inputValue = Math.max(inputValue, min);
-        return inputValue;
+    // TODO fix this method according to assignment pm
+    public void brake(double amount) {
+        decrementSpeed(amount);
     }
 }
