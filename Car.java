@@ -7,7 +7,7 @@ public abstract class Car implements Movable {
     private double currentSpeed; // The current speed of the car
     private Color color; // Color of the car
     private final String modelName; // The car model name
-    
+
     private Point2D.Double currentPosition = new Point2D.Double(0,0);
     private Direction currentDirection = Direction.UP;
 
@@ -39,7 +39,7 @@ public abstract class Car implements Movable {
     public int getNrDoors() {
         return nrDoors;
     }
-    
+
     public double getEnginePower() {
         return enginePower;
     }
@@ -64,23 +64,36 @@ public abstract class Car implements Movable {
         currentSpeed = 0;
     }
 
-    public void incrementSpeed(double amount) {
-        currentSpeed = getCurrentSpeed() + speedFactor() * amount;
+    public abstract double speedFactor();
+
+    private void incrementSpeed(double amount){
+        double newSpeed = getCurrentSpeed() + speedFactor() * amount;
+        newSpeed = clamp(newSpeed, 0, enginePower);
+
+        this.currentSpeed = newSpeed;
     }
 
-    public void decrementSpeed(double amount) {
-        currentSpeed = getCurrentSpeed() - speedFactor() * amount;
-    }
-        
-    abstract public double speedFactor();
-    
-    // TODO fix this method according to assignment pm
-    public void gas(double amount) {
-        incrementSpeed(amount);
+    private void decrementSpeed(double amount){
+        double newSpeed = getCurrentSpeed() - speedFactor() * amount;
+        newSpeed = clamp(newSpeed, 0, enginePower);
+
+        this.currentSpeed = newSpeed;
     }
 
-    // TODO fix this method according to assignment pm
-    public void brake(double amount) {
-        decrementSpeed(amount);
+    public void gas(double amount){
+        if ((amount >= 0) && (amount<=1))
+            incrementSpeed(amount);
+    }
+
+    public void brake(double amount){
+        if ((amount >= 0) && (amount<=1))
+            decrementSpeed(amount);
+    }
+
+    // Helper function
+    private double clamp(double inputValue, double min, double max){
+        inputValue = Math.min(inputValue, max);
+        inputValue = Math.max(inputValue, min);
+        return inputValue;
     }
 }
