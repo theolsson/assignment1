@@ -1,12 +1,17 @@
 import java.awt.*;
 
-public class Saab95 extends Car {
-
-    public boolean turboOn;
+public class Saab95 extends Car{
+    private boolean turboOn;
     
     public Saab95() {
-        super(2, 125, Color.red, "Saab95");
-        this.turboOn = false;
+        super(
+            2, 
+            Color.red, 
+            125,
+            "Saab95"
+        );
+        
+        turboOn = false;
         stopEngine();
     }
 
@@ -18,10 +23,11 @@ public class Saab95 extends Car {
         turboOn = false;
     }
 
-    @Override
+    @Override 
     public double speedFactor() {
         double turbo = 1;
         if(turboOn) turbo = 1.3;
-        return getEnginePower() * 0.01 * turbo;
+        return this.getEnginePower() * 0.01 * turbo;
     }
+
 }
